@@ -1,0 +1,21 @@
+.hidden {
+  opacity: 0;
+}
+
+.login .container .login-form {
+  background-color: #fff;
+  box-shadow: var(--shadow-2);
+  padding: 28px 16px 28px 16px;
+  border-radius: var(--radius-medium);
+  max-width: 600px;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+@media (max-width: 576px) {
+  .res576-btn {
+    font-size: 12px;
+  }
+}/*# sourceMappingURL=styles.css.map */

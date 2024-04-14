@@ -1,0 +1,54 @@
+.header-before {
+  background: var(--primary-40);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+}
+.header-before .containery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+}
+.header-before .containery .logo {
+  color: var(--neutral-100);
+  display: flex;
+  justify-content: center;
+}
+.header-before .containery .logo.full {
+  width: 200px;
+}
+.header-before .containery .logo.coll {
+  width: 80px;
+}
+.header-before .containery .logo .logo-text {
+  text-decoration: none;
+  transform: translateX(-16px);
+  min-width: 60px;
+  padding: 0 16px;
+  text-align: center;
+}
+.header-before .containery .logo .logo-text:hover {
+  color: #fff !important;
+}
+.header-before .containery .auth {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 12px;
+}
+.header-before .containery .auth .auth-btn {
+  color: var(--neutral-100);
+  padding: 0 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transform: translateY(2px);
+}
+
+.footer {
+  text-align: center;
+  padding: 16px;
+  background-color: var(--neutral-90);
+}/*# sourceMappingURL=styles.css.map */

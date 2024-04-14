@@ -1,0 +1,68 @@
+.header-before {
+    background: var(--primary-40);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+
+    .containery {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 16px;
+
+
+        .logo {
+            color: var(--neutral-100);
+
+            display: flex;
+            justify-content: center;
+
+
+
+            &.full {
+                width: 200px;
+            }
+
+            &.coll {
+                width: 80px;
+            }
+
+
+            .logo-text {
+                text-decoration: none;
+                transform: translateX(-16px);
+                min-width: 60px;
+                padding: 0 16px;
+                text-align: center;
+
+                &:hover {
+                    color: #fff !important;
+                }
+            }
+
+        }
+
+        .auth {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 12px;
+
+            .auth-btn {
+                color: var(--neutral-100);
+                padding: 0 8px;
+                cursor: pointer;
+                font-size: 20px;
+                transform: translateY(2px);
+            }
+        }
+    }
+}
+
+.footer {
+    text-align: center;
+    padding: 16px;
+    background-color: var(--neutral-90);
+}

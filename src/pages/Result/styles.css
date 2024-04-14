@@ -1,0 +1,19 @@
+.correctAnswer {
+  color: rgb(7, 202, 7);
+}
+
+.incorrectAnswer {
+  color: red;
+}
+
+.q-wrapper {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: var(--radius-medium);
+}
+
+@media (max-width: 576px) {
+  .q-wrapper .answer {
+    max-width: 245px !important;
+  }
+}/*# sourceMappingURL=styles.css.map */
