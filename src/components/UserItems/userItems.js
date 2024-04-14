@@ -56,7 +56,7 @@ const UserItems = (props) => {
                 </>)} */}
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div style={{ color: "#fff", fontSize: "18px", transform: "translateY(1px)" }}>
+                <div style={{ color: "#fff", fontSize: "17px", transform: "translateY(1px)" }}>
                     {userName}
                 </div>
                 <span className="body-medium auth-btn" onClick={handleLogout}>
