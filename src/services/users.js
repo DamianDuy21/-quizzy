@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, orderBy, query, where, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, limit, orderBy, query, where, doc, setDoc, updateDoc } from "firebase/firestore";
 import db from "../firebase";
 import { v4 as uuidv4 } from 'uuid';
 const colRef = collection(db, "users")
@@ -45,6 +45,18 @@ export const addUser = async (obj) => {
         const ress = await setDoc(res, obj)
         if (ress) {
             console.log(ress)
+        }
+    }
+    catch (err) {
+        alert(err)
+    }
+}
+export const updateUser = async (id, obj) => {
+    try {
+        const docReff = await doc(db, "users", id)
+        const res = await updateDoc(docReff, obj)
+        if (res) {
+            return res
         }
     }
     catch (err) {

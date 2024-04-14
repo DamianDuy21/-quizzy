@@ -46,7 +46,9 @@ const LayoutBeforeLayout = () => {
                             <span onClick={() => { nav("/registered") }} className="body-medium auth-btn">
                                 <FormOutlined />
                             </span>
-                            <span onClick={() => { nav("/login") }} className="body-medium auth-btn"><LoginOutlined /></span>
+                            <span onClick={() => { nav("/login") }} className="body-medium auth-btn">
+                                <LoginOutlined />
+                            </span>
 
                         </div>
                     </div>

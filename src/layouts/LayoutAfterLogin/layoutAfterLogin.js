@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-
 import "./styles.css"
 import { Button, Dropdown, Layout, Menu, Popconfirm, Space } from "antd"
 import { useEffect, useState } from "react";
-import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UnorderedListOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { FileTextOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UnorderedListOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import LayoutBeforeLayout from "../LayoutBeforeLogin/layoutBeforeLogin";
 import { useSelector } from "react-redux";
 import { deleteAllCookies, getCookie } from "../../helper/cookies";
@@ -15,6 +15,7 @@ const LayoutAfterLogin = () => {
     const [status, setStatus] = useState(false)
     const param = useLocation()
     const userName = getCookie("fullName")
+    const role = getCookie("role")
     const nav = useNavigate()
     window.addEventListener("resize", (e) => {
         let width = e.target.innerWidth;
@@ -39,6 +40,33 @@ const LayoutAfterLogin = () => {
         deleteAllCookies();
         nav("/")
     }
+    const items1 = [
+        {
+            key: '/topics',
+            icon: <UnorderedListOutlined />,
+            label: <Link to={"/topics"}>Topics</Link>,
+
+        },
+        {
+            key: '/profile',
+            icon: <FileTextOutlined />,
+            label: <Link to={"/profile"}>Profile</Link>,
+
+        },
+        {
+            key: '/history',
+            icon: <VideoCameraOutlined />,
+            label: <Link to={"/history"}>History</Link>,
+
+        }
+    ]
+    const items2 = [
+        {
+            key: '/topics',
+            icon: <UnorderedListOutlined />,
+            label: <Link to={"/topics"}>Topics</Link>,
+        },
+    ]
 
     return (<>
         <Layout>
@@ -67,9 +95,7 @@ const LayoutAfterLogin = () => {
 
 
                     <div className="auth">
-
                         <UserItems userName={userName} handleLogout={handleLogout} />
-
                     </div>
 
                 </div>
@@ -86,20 +112,7 @@ const LayoutAfterLogin = () => {
                         theme="light"
                         mode="inline"
                         defaultSelectedKeys={param.pathname}
-                        items={[
-                            {
-                                key: '/topics',
-                                icon: <UnorderedListOutlined />,
-                                label: <Link to={"/topics"}>Topics</Link>,
-
-                            },
-                            {
-                                key: '/history',
-                                icon: <VideoCameraOutlined />,
-                                label: <Link to={"/history"}>History</Link>,
-
-                            }
-                        ]}
+                        items={role == "TESTER" ? (items2) : (items1)}
                     />
                 </Sider>
                 <main>

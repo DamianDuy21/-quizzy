@@ -289,6 +289,10 @@ main {
   box-shadow: var(--shadow-2);
   transition: var(--transition-duration-quick) var(--transition-easing-quick);
 }
+.card.no-hover:hover {
+  box-shadow: var(--shadow-2);
+  cursor: auto;
+}
 .card:hover, .card:focus-visible {
   box-shadow: var(--shadow-4);
   cursor: pointer;

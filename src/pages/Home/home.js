@@ -9,7 +9,7 @@ const Home = () => {
     const fetchTopics = async () => {
         let items = []
         const res = await getTopics()
-        console.log(res)
+        // console.log(res)
         if (res && res.length > 0) {
             setTopics(res)
         }

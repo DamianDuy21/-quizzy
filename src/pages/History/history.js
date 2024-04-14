@@ -2,7 +2,7 @@ import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import { getResultsByUserEmail } from "../../services/result";
 import { getCookie } from "../../helper/cookies";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ViewDetailResultButton from "../../components/ViewDetailResultButton/viewDetailResultButton";
 import moment from "moment";
 
@@ -129,11 +129,7 @@ const History = () => {
     return (
         <>
             {role == "TESTER" ? (<>
-                <div className="q-wrapper" style={{ padding: "16px" }}>
-                    <div className="title-medium">
-                        You need to sign in to use this feature
-                    </div>
-                </div>
+
             </>) : (<>
                 <Table
                     columns={tableCollapse ? (columnsMini) : (columns)}

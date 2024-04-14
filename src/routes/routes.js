@@ -7,6 +7,8 @@ import ProtectedPage from "../components/ProtectedPage/protectedPage";
 import Result from "../pages/Result/result";
 import Quiz from "../pages/Quiz/quiz";
 import History from "../pages/History/history";
+import Profile from "../pages/Profile/profile";
+import ProtectedTesterPage from "../components/ProtectedTesterPage/protectedTesterPage";
 
 const Routes = [
     {
@@ -38,13 +40,24 @@ const Routes = [
                         element: <Quiz />
                     },
                     {
-                        path: "history",
-                        element: <History />
-                    },
-                    {
                         path: "result/:resultId",
                         element: <Result />
                     },
+                    {
+                        path: "/",
+                        element: <ProtectedTesterPage />,
+                        children: [
+                            {
+                                path: "history",
+                                element: <History />
+                            },
+                            {
+                                path: "profile",
+                                element: <Profile />
+                            },
+                        ]
+                    },
+
                 ]
 
             },
