@@ -65,7 +65,7 @@ const TopicDetailCRUDButtons = (props) => {
         <>
             <Modal
                 footer={null}
-                title={<div style={{ padding: "12px 0" }}></div>} open={isModalOpen} onCancel={handleCancel}>
+                title={<div style={{ padding: "6px 0" }}></div>} open={isModalOpen} onCancel={handleCancel}>
                 <Form
                     form={form}
                     labelCol={{
@@ -166,21 +166,15 @@ const TopicDetailCRUDButtons = (props) => {
                         ))}
                     </Form.Item>
 
-                    <div style={{ padding: "4px 0" }}></div>
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 0,
-                            span: 24,
-                        }}
-                    >
+                    <Row>
                         <Button loading={isLoading}
                             type="primary"
                             htmlType="submit"
                             style={{ width: "100%", height: 36 }}>
                             Update
                         </Button>
-                    </Form.Item>
-
+                    </Row>
+                    <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
             <div style={{ display: "flex", gap: "12px", justifyContent: "end" }}>

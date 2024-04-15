@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
-import { Button, Divider, Form, Input, Modal, Popconfirm } from "antd"
+import { Button, Divider, Form, Input, Modal, Popconfirm, Row } from "antd"
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
@@ -50,7 +50,7 @@ const UsersCRUDButtons = (props) => {
         <>
             <Modal
                 footer={null}
-                title={<div style={{ padding: "12px 0" }}></div>} open={isModalOpen} onCancel={handleCancel}>
+                title={<div style={{ padding: "6px 0" }}></div>} open={isModalOpen} onCancel={handleCancel}>
                 <Form
                     form={form}
                     labelCol={{
@@ -109,11 +109,8 @@ const UsersCRUDButtons = (props) => {
                         <Input.Password />
                     </Form.Item>
                     <div style={{ padding: "4px 0" }}></div>
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 0,
-                            span: 24,
-                        }}
+                    <Row
+
                     >
                         <Button loading={isLoading}
                             type="primary"
@@ -121,8 +118,8 @@ const UsersCRUDButtons = (props) => {
                             style={{ width: "100%", height: 36 }}>
                             Update
                         </Button>
-                    </Form.Item>
-
+                    </Row>
+                    <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
             <div style={{ display: "flex", gap: "12px", justifyContent: "end" }}>

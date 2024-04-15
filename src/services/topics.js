@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, orderBy, query, where, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, limit, orderBy, query, where, doc, setDoc, updateDoc } from "firebase/firestore";
 import db from "../firebase";
 import { v4 as uuidv4 } from 'uuid';
 const colRef = collection(db, "topic")
@@ -28,5 +28,17 @@ export const getTopicIdByTopicId = async (topicId) => {
         items.push(item.data())
     })
     return items
+}
+export const updateTopic = async (id, obj) => {
+    try {
+        const docReff = await doc(db, "topic", id)
+        const res = await updateDoc(docReff, obj)
+        if (res) {
+            return res
+        }
+    }
+    catch (err) {
+        alert(err)
+    }
 }
 

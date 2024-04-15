@@ -161,11 +161,8 @@ const Profile = () => {
                         <Input.Password />
                     </Form.Item>
 
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 0,
-                            span: 24,
-                        }}
+                    <Row
+
                     >
                         <Button loading={isLoading}
                             type="primary"
@@ -173,8 +170,8 @@ const Profile = () => {
                             style={{ width: "100%", height: 36 }}>
                             Update
                         </Button>
-                    </Form.Item>
-
+                    </Row>
+                    <div style={{ padding: "8px 0" }}></div>
                 </Form>
             </div>
         </>
