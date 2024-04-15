@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
 
 const UsersCRUDButtons = (props) => {
-    const { data, setData, id } = props
+    const { fetchUsers, id } = props
     const [form] = useForm()
+    const [role, setRole] = useState("")
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const fetchUserById = async () => {
         const res = await getUserById(id)
         console.log(res[0])
+        setRole(res[0].role)
         form.setFieldsValue({
             email: res[0].email,
             fullName: res[0].fullName,
@@ -20,7 +22,8 @@ const UsersCRUDButtons = (props) => {
     }
     const onFinish = async (e) => {
         setIsLoading(true)
-        const res = await updateUser(id, e)
+        await updateUser(id, e)
+        await fetchUsers()
         await setTimeout(() => {
             alert("Update successfully!")
         }, 500)
@@ -38,7 +41,7 @@ const UsersCRUDButtons = (props) => {
             alert("Delete successfully!")
         }, 1000)
         const ress = await getUsers()
-        setData(ress)
+        await fetchUsers()
     }
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -122,26 +125,31 @@ const UsersCRUDButtons = (props) => {
                     <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "end" }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "end", flexWrap: "wrap" }}>
 
                 <Button
                     onClick={handleEditUser}
                     style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><EditOutlined /></Button>
-                <Popconfirm
-                    placement="bottomRight"
-                    title={"Are you sure delete this user?"}
-                    description={"This action can't be revesred"}
-                    okText="Yes"
-                    cancelText="No"
-                    onConfirm={handleDeleteUser}
-                >
-                    <Button
-                        // onClick={handleDeleteUser}
-                        style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><DeleteOutlined style={{ color: "red" }} /></Button>
 
-                </Popconfirm>
+                {((role != "ADMIN") && (role != "TESTER")) ? (
+                    <Popconfirm
+                        placement="bottomRight"
+                        title={"Are you sure delete this user?"}
+                        description={"This action can't be revesred"}
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={handleDeleteUser}
+                    >
+                        <Button
+                            // onClick={handleDeleteUser}
+                            style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><DeleteOutlined style={{ color: "red" }} /></Button>
 
-            </div>
+                    </Popconfirm>
+                ) : (<>
+                    {/* <div style={{ width: "32px", height: "32px" }}></div> */}
+                </>)}
+
+            </div >
         </>
     )
 }

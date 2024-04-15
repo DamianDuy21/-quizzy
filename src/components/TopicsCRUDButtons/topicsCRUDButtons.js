@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons"
 import { Button, Divider, Form, Input, Modal, Popconfirm } from "antd"
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from 'antd';
 
 const TopicsCRUDButtons = (props) => {
-    const { record } = props
+    const { fetchTopics, record } = props
     const [isLoading, setIsLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = useForm()
@@ -31,9 +31,26 @@ const TopicsCRUDButtons = (props) => {
         // const ress = await getTopics()
         // setData(ress)
     }
+    const handleDisplayTopic = async (e) => {
+        e.preventDefault()
+        let obj = record
+        if (obj.status == "displayed") {
+            obj.status = "hidden"
+        }
+        else if (obj.status == "hidden") {
+            obj.status = "displayed"
+        }
+        await updateTopic(record.id, obj)
+        await fetchTopics()
+        await setTimeout(() => {
+            alert("Update successfully!")
+        }, 500)
+
+    }
     const onFinish = async (e) => {
         setIsLoading(true)
-        const res = await updateTopic(e.id, e)
+        await updateTopic(e.id, e)
+        await fetchTopics()
         await setTimeout(() => {
             alert("Update successfully!")
         }, 500)
@@ -129,11 +146,18 @@ const TopicsCRUDButtons = (props) => {
                     <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "end" }}>
+            <div style={{ display: "flex", gap: "8px", justifyContent: "end", flexWrap: "wrap" }}>
 
                 <Button
                     onClick={handleEditTopic}
                     style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><EditOutlined /></Button>
+                <Button
+                    onClick={handleDisplayTopic}
+                    style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {record.status == "displayed"
+                        ? (<><EyeInvisibleOutlined /></>)
+                        : (<><EyeOutlined /></>)}
+                </Button>
                 <Popconfirm
                     placement="bottomRight"
                     title={"Are you sure delete this user?"}
@@ -141,7 +165,6 @@ const TopicsCRUDButtons = (props) => {
                     okText="Yes"
                     cancelText="No"
                     onConfirm={handleDeleteTopic}
-                // disabled
                 >
                     <Button
                         style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><DeleteOutlined style={{ color: "red" }} /></Button>

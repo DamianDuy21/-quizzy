@@ -10,15 +10,20 @@ const Topic = (props) => {
     return (
 
         <>
-            <div className="card" onClick={handleQuiz}>
-                <div className="card-banner img-holder">
+            {item.status == "displayed" ?
+                (<>
+                    <div className="card" onClick={handleQuiz}>
+                        <div className="card-banner img-holder">
 
-                    <img src={item.src} alt="" className="img-cover" />
-                </div>
-                <div className="card-content">
-                    <div className="card-title title-small">{item.name}</div>
-                </div>
-            </div>
+                            <img src={item.src} alt="" className="img-cover" />
+                        </div>
+                        <div className="card-content">
+                            <div className="card-title title-small">{item.name}</div>
+                        </div>
+                    </div>
+                </>)
+                : (<></>)}
+
         </>
     )
 }

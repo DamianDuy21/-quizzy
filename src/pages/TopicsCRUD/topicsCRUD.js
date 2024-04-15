@@ -1,4 +1,4 @@
-import { Table } from "antd"
+import { Badge, Table, Tag } from "antd"
 import { useEffect, useState } from "react"
 import { getTopics } from "../../services/topics"
 import TopicsCRUDButtons from "../../components/TopicsCRUDButtons/topicsCRUDButtons"
@@ -21,15 +21,48 @@ const TopicsCRUD = () => {
             setTableCollapse(false)
         }
     })
+    const fetchTopics = async () => {
+        setLoading(true)
+        const res = await getTopics()
+        setData(res)
+        setLoading(false)
+    }
     const columnsMini = [
         {
             title: 'Topic',
             dataIndex: 'name',
-            width: '70%',
+            width: '40%',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.name > b.name,
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 135 }}>{record.name}</div>
+                        <div style={{ maxWidth: 64 }}>
+                            {record.name}
+                        </div>
+
+                    </>
+                )
+            },
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            width: '10%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        {(record.status == "displayed") ? (<>
+                            <div style={{ maxWidth: 24 }}>
+                                <Badge color={'green'} />
+                            </div>
+
+                        </>)
+                            : (<>
+                                <div style={{ maxWidth: 24 }}>
+                                    <Badge color={'red'} />
+                                </div>
+                            </>)}
                     </>
                 )
             },
@@ -39,7 +72,7 @@ const TopicsCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <TopicsCRUDButtons record={record} />
+                        <TopicsCRUDButtons fetchTopics={fetchTopics} record={record} />
                     </>
                 )
             },
@@ -51,19 +84,38 @@ const TopicsCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            width: '30%',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.id > b.id,
+            width: '20%',
         },
         {
             title: 'Topic',
             dataIndex: 'name',
-            width: '40%',
+            width: '30%',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            width: '20%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        {(record.status == "displayed") ? (<>
+                            <Tag color="success">displayed</Tag>
+                        </>)
+                            : (<>
+                                <Tag color="error">hidden</Tag>
+                            </>)}
+                    </>
+                )
+            },
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <TopicsCRUDButtons record={record} />
+                        <TopicsCRUDButtons fetchTopics={fetchTopics} record={record} />
                     </>
                 )
             },
@@ -84,18 +136,13 @@ const TopicsCRUD = () => {
             setData([]);
         }
     };
-    const fetchResults = async () => {
-        setLoading(true)
-        const res = await getTopics()
-        setData(res)
-        setLoading(false)
-    }
+
     useEffect(() => {
         let initWidth = window.innerWidth
         if (initWidth <= 767.98) {
             setTableCollapse(true)
         }
-        fetchResults()
+        fetchTopics()
 
     }, [])
     return (

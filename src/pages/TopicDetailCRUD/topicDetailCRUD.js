@@ -40,7 +40,7 @@ const TopicsDetailCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 135 }}>{record.question}</div>
+                        <div>{record.question}</div>
                     </>
                 )
             },
@@ -63,6 +63,7 @@ const TopicsDetailCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
+            defaultSortOrder: 'ascend',
             sorter: (a, b) => parseInt(a.id) > parseInt(b.id),
             width: '20%',
         },

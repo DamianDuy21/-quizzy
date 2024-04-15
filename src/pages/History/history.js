@@ -1,10 +1,11 @@
-import { Button, Table } from "antd";
+import { Button, Col, Form, Input, Row, Table } from "antd";
 import { useEffect, useState } from "react";
 import { getResultsByUserEmail } from "../../services/result";
 import { getCookie } from "../../helper/cookies";
 import { Link, useNavigate } from "react-router-dom";
 import ViewDetailResultButton from "../../components/ViewDetailResultButton/viewDetailResultButton";
 import moment from "moment";
+import Search from "antd/es/input/Search";
 
 const History = () => {
     const role = getCookie("role")
@@ -32,6 +33,16 @@ const History = () => {
             dataIndex: 'topicName',
             sorter: (a, b) => a.topicName > b.topicName,
             width: '40%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <div style={{ maxWidth: 46 }}>
+                            {record.topicName}
+                        </div>
+
+                    </>
+                )
+            }
         },
         {
             title: 'Created at',
@@ -41,7 +52,10 @@ const History = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        {moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}
+                        <div style={{ maxWidth: 46 }}>
+                            {moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}
+                        </div>
+
                     </>
                 )
             }
@@ -51,7 +65,10 @@ const History = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <ViewDetailResultButton id={record.id} />
+                        <div style={{ maxWidth: 68 }}>
+                            <ViewDetailResultButton id={record.id} />
+                        </div>
+
                     </>
                 )
             },
@@ -74,6 +91,7 @@ const History = () => {
         {
             title: 'Created at',
             dataIndex: 'createdAt',
+            defaultSortOrder: 'descend',
             sorter: (a, b) => (moment(a.createdAt) > moment(b.createdAt)),
             width: '30%',
             render: (text, record, index) => {
@@ -130,6 +148,19 @@ const History = () => {
             {role == "TESTER" ? (<>
 
             </>) : (<>
+                {/* <div className="search-wrapper">
+                    <Form>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <Form.Item >
+                                <Input />
+                            </Form.Item>
+                            <Button type="primary">Search</Button>
+                        </div>
+
+                    </Form>
+                </div> */}
+
+
                 <Table
                     columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}
@@ -137,7 +168,8 @@ const History = () => {
                     loading={loading}
                     onChange={handleTableChange}
                 />
-            </>)}
+            </>)
+            }
 
         </>
     )

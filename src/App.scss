@@ -392,3 +392,10 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 16px;
 }
+
+.search-wrapper {
+    padding: 24px 12px 2px 12px;
+    border-radius: var(--radius-small);
+    background-color: #fff;
+    margin-bottom: 16px;
+}

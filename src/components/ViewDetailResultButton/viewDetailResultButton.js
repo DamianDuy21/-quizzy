@@ -10,6 +10,7 @@ const ViewDetailResultButton = (props) => {
     return (
 
         <>
+
             <Button type="primary" onClick={handleViewDetail}>Detail</Button>
 
         </>

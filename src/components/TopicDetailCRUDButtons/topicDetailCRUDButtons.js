@@ -177,7 +177,7 @@ const TopicDetailCRUDButtons = (props) => {
                     <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "end" }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "end", flexWrap: "wrap" }}>
 
                 <Button
                     onClick={handleEditQuestion}

@@ -22,15 +22,26 @@ const UsersCRUD = () => {
             setTableCollapse(false)
         }
     })
+    const fetchUsers = async () => {
+        setLoading(true)
+        const res = await getUsers()
+        setData(res)
+        setLoading(false)
+    }
     const columnsMini = [
         {
             title: 'E-mail',
             dataIndex: 'email',
-            // width: "40%",
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.email > b.email,
+            width: "70%",
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 135 }}>{record.email}</div>
+                        <div style={{ maxWidth: 128 }}>
+                            {record.email}
+                        </div>
+
                     </>
                 )
             },
@@ -40,7 +51,7 @@ const UsersCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
+                        <UsersCRUDButtons fetchUsers={fetchUsers} id={record.id} />
                     </>
                 )
             },
@@ -57,6 +68,8 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.email > b.email,
             width: '40%',
         },
         {
@@ -64,7 +77,7 @@ const UsersCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
+                        <UsersCRUDButtons fetchUsers={fetchUsers} id={record.id} />
                     </>
                 )
             },
@@ -85,18 +98,13 @@ const UsersCRUD = () => {
             setData([]);
         }
     };
-    const fetchResults = async () => {
-        setLoading(true)
-        const res = await getUsers()
-        setData(res)
-        setLoading(false)
-    }
+
     useEffect(() => {
         let initWidth = window.innerWidth
         if (initWidth <= 767.98) {
             setTableCollapse(true)
         }
-        fetchResults()
+        fetchUsers()
 
     }, [])
     return (
