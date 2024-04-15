@@ -38,6 +38,15 @@ export const getUserById = async (id) => {
     })
     return items
 }
+export const getUserByEmail = async (email) => {
+    const q = await query(colRef, where("email", "==", email))
+    const res = await getDocs(q)
+    let items = []
+    res.forEach(item => {
+        items.push(item.data())
+    })
+    return items
+}
 export const checkUserSignUp = async (email) => {
     const q = await query(colRef, where("email", "==", email))
     const res = await getDocs(q)

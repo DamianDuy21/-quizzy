@@ -1,17 +1,18 @@
 import { Button, Col, Form, Input, Row, Table } from "antd";
 import { useEffect, useState } from "react";
-import { getResultsByUserEmail } from "../../services/result";
+import { getResultsByUserEmail, getUserResultsByTopicName } from "../../services/result";
 import { getCookie } from "../../helper/cookies";
-import { Link, useNavigate } from "react-router-dom";
 import ViewDetailResultButton from "../../components/ViewDetailResultButton/viewDetailResultButton";
 import moment from "moment";
-import Search from "antd/es/input/Search";
+import { getTopicIdByTopicName } from "../../services/topics";
+import { useForm } from "antd/es/form/Form";
 
 const History = () => {
     const role = getCookie("role")
     const [tableCollapse, setTableCollapse] = useState(false)
     const [data, setData] = useState();
     const [loading, setLoading] = useState(false);
+    const [form] = useForm()
     const [tableParams, setTableParams] = useState({
         pagination: {
             current: 1,
@@ -135,6 +136,24 @@ const History = () => {
         setData(res)
         setLoading(false)
     }
+    const onFinish = async (e) => {
+        console.log(e)
+        form.resetFields()
+        form.setFieldValue({
+            name: ""
+        })
+        if (e.name) {
+            const res = await getUserResultsByTopicName(e.name, getCookie("email"))
+            await setData(res)
+        }
+        else {
+            const res = await getResultsByUserEmail(getCookie("email"))
+            setData(res)
+
+        }
+
+
+    }
 
     useEffect(() => {
         let initWidth = window.innerWidth
@@ -148,17 +167,71 @@ const History = () => {
             {role == "TESTER" ? (<>
 
             </>) : (<>
-                {/* <div className="search-wrapper">
-                    <Form>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <Form.Item >
-                                <Input />
-                            </Form.Item>
-                            <Button type="primary">Search</Button>
-                        </div>
+                <div className="search-wrapper">
+                    <Form
+                        onFinish={onFinish}
+                        form={form}
+                    >
+                        <Row gutter={[16, 0]}>
+                            {tableCollapse == false
+                                ? (<>
+                                    <Col span={20}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                            label="Topic"
+                                            name="name"
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}
+                                    >
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                        >
 
+                                            <Button htmlType="submit" type="primary">Search</Button>
+                                        </Form.Item>
+                                    </Col>
+                                </>)
+                                : (<>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                            label="Topic"
+                                            name="name"
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                        >
+
+                                            <div style={{ display: "flex", justifyContent: "end" }}>
+                                                <Button htmlType="submit" type="primary">Search</Button>
+                                            </div>
+
+                                        </Form.Item>
+                                    </Col>
+                                </>)}
+
+                        </Row>
                     </Form>
-                </div> */}
+                </div>
 
 
                 <Table

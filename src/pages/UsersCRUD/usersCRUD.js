@@ -1,12 +1,14 @@
-import { Table } from "antd"
+import { Button, Col, Form, Input, Row, Table } from "antd"
 import { useEffect, useState } from "react"
-import { getUsers } from "../../services/users"
+import { getUserByEmail, getUsers } from "../../services/users"
 import UsersCRUDButtons from "../../components/UsersCRUDButtons/usersCRUDButtons"
+import { useForm } from "antd/es/form/Form"
 
 const UsersCRUD = () => {
     const [data, setData] = useState([])
     const [tableCollapse, setTableCollapse] = useState(false)
     const [loading, setLoading] = useState(false);
+    const [form] = useForm()
     const [tableParams, setTableParams] = useState({
         pagination: {
             current: 1,
@@ -98,6 +100,24 @@ const UsersCRUD = () => {
             setData([]);
         }
     };
+    const onFinish = async (e) => {
+        console.log(e)
+        form.resetFields()
+        form.setFieldValue({
+            email: ""
+        })
+        if (e.email) {
+            const res = await getUserByEmail(e.email)
+            await setData(res)
+        }
+        else {
+            const res = await getUsers()
+            setData(res)
+
+        }
+
+
+    }
 
     useEffect(() => {
         let initWidth = window.innerWidth
@@ -110,6 +130,71 @@ const UsersCRUD = () => {
     return (
         <>
             {data ? (<>
+                <div className="search-wrapper">
+                    <Form
+                        onFinish={onFinish}
+                        form={form}
+                    >
+                        <Row gutter={[16, 0]}>
+                            {tableCollapse == false
+                                ? (<>
+                                    <Col span={20}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                            label="E-mail"
+                                            name="email"
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={4}
+                                    >
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                        >
+
+                                            <Button htmlType="submit" type="primary">Search</Button>
+                                        </Form.Item>
+                                    </Col>
+                                </>)
+                                : (<>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                            label="E-mail"
+                                            name="email"
+                                        >
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={24}>
+                                        <Form.Item
+                                            wrapperCol={{
+                                                offset: 0,
+                                                span: 24,
+                                            }}
+                                        >
+
+                                            <div style={{ display: "flex", justifyContent: "end" }}>
+                                                <Button htmlType="submit" type="primary">Search</Button>
+                                            </div>
+
+                                        </Form.Item>
+                                    </Col>
+                                </>)}
+
+                        </Row>
+                    </Form>
+                </div>
                 <Table
                     columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}

@@ -12,6 +12,15 @@ export const getResultsByUserEmail = async (email) => {
     })
     return items
 }
+export const getUserResultsByTopicName = async (name, email) => {
+    const q = await query(colRef, where("topicName", "==", name), where("userEmail", "==", email))
+    const res = await getDocs(q)
+    let items = []
+    res.forEach(item => {
+        items.push(item.data())
+    })
+    return items
+}
 export const getResultById = async (id) => {
     const q = await query(colRef, where("id", "==", id))
     const res = await getDocs(q)
