@@ -21,6 +21,25 @@ const TopicsCRUD = () => {
             setTableCollapse(false)
         }
     })
+    const columnsMini = [
+        {
+            title: 'Topic',
+            dataIndex: 'name',
+            width: '70%',
+        },
+        {
+            title: '',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <TopicsCRUDButtons record={record} />
+                    </>
+                )
+            },
+            width: '30%',
+
+        },
+    ];
     const columns = [
         {
             title: 'id',
@@ -37,7 +56,7 @@ const TopicsCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <TopicsCRUDButtons id={record.id} />
+                        <TopicsCRUDButtons record={record} />
                     </>
                 )
             },
@@ -76,7 +95,7 @@ const TopicsCRUD = () => {
         <>
             {data ? (<>
                 <Table
-                    columns={(columns)}
+                    columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}
                     pagination={tableParams.pagination}
                     loading={loading}

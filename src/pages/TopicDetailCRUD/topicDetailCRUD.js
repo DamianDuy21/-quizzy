@@ -1,10 +1,20 @@
-import { Table } from "antd"
 import { useEffect, useState } from "react"
-import { getUsers } from "../../services/users"
-import UsersCRUDButtons from "../../components/UsersCRUDButtons/usersCRUDButtons"
+import { useParams } from "react-router-dom"
+import { getTopicIdByTopicName } from "../../services/topics"
+import { getQuestionsByTopicId } from "../../services/questions"
+import { Table } from "antd"
+import TopicDetailCRUDButtons from "../../components/TopicDetailCRUDButtons/topicDetailCRUDButtons"
+const TopicsDetailCRUD = () => {
+    const param = useParams()
+    const [q, setQ] = useState([])
 
-const UsersCRUD = () => {
-    const [data, setData] = useState([])
+    const fetchQuestions = async () => {
+        const res = await getTopicIdByTopicName(param.topicName)
+        const ress = await getQuestionsByTopicId(parseInt(res[0].id))
+        console.log(ress)
+        ress.sort((a, b) => (parseInt(a.id) > parseInt(b.id)) ? 1 : ((parseInt(b.id) > parseInt(a.id)) ? -1 : 0));
+        setQ(ress)
+    }
     const [tableCollapse, setTableCollapse] = useState(false)
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState({
@@ -24,48 +34,42 @@ const UsersCRUD = () => {
     })
     const columnsMini = [
         {
-            title: 'E-mail',
-            dataIndex: 'email',
-            width: "70%",
-            render: (text, record, index) => {
-                return (
-                    <>
-                        <div>{record.email}</div>
-                    </>
-                )
-            },
+            title: 'Question',
+            dataIndex: 'question',
+            width: '70%',
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
+                        <TopicDetailCRUDButtons q={q} setQ={q} id={record.id} />
                     </>
                 )
             },
             width: '30%',
 
         },
-    ]
+    ];
+
     const columns = [
         {
             title: 'id',
             dataIndex: 'id',
-            width: '40%',
+            sorter: (a, b) => parseInt(a.id) > parseInt(b.id),
+            width: '20%',
         },
         {
-            title: 'E-mail',
-            dataIndex: 'email',
-            // sorter: (a, b) => a.email > b.email,
-            width: '40%',
+            title: 'Question',
+            dataIndex: 'question',
+            width: '60%',
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
+                        <TopicDetailCRUDButtons q={q} setQ={q} id={record.id} />
                     </>
                 )
             },
@@ -83,13 +87,13 @@ const UsersCRUD = () => {
 
         // `dataSource` is useless since `pageSize` changed
         if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-            setData([]);
+            setQ([]);
         }
     };
     const fetchResults = async () => {
         setLoading(true)
-        const res = await getUsers()
-        setData(res)
+        // const res = await getUsers()
+        // setData(res)
         setLoading(false)
     }
     useEffect(() => {
@@ -97,15 +101,14 @@ const UsersCRUD = () => {
         if (initWidth <= 767.98) {
             setTableCollapse(true)
         }
-        fetchResults()
-
+        fetchQuestions()
     }, [])
     return (
         <>
-            {data ? (<>
+            {q ? (<>
                 <Table
                     columns={tableCollapse ? (columnsMini) : (columns)}
-                    dataSource={data}
+                    dataSource={q}
                     pagination={tableParams.pagination}
                     loading={loading}
                     onChange={handleTableChange}
@@ -116,4 +119,4 @@ const UsersCRUD = () => {
         </>
     )
 }
-export default UsersCRUD
+export default TopicsDetailCRUD

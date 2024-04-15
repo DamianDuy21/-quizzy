@@ -13,6 +13,7 @@ import ProtectedAdminPage from "../components/ProtectedAdminPage/protectedAdminP
 import TopicsCRUD from "../pages/TopicsCRUD/topicsCRUD";
 import UsersCRUD from "../pages/UsersCRUD/usersCRUD";
 import { Navigate } from "react-router-dom";
+import TopicsDetailCRUD from "../pages/TopicDetailCRUD/topicDetailCRUD";
 
 const Routes = [
     {
@@ -70,6 +71,10 @@ const Routes = [
                                     {
                                         path: "topicscrud",
                                         element: <TopicsCRUD />
+                                    },
+                                    {
+                                        path: "topicdetailcrud/:topicName",
+                                        element: <TopicsDetailCRUD />
                                     },
                                     {
                                         path: "userscrud",
