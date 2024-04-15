@@ -26,11 +26,11 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            width: "70%",
+            // width: "40%",
             render: (text, record, index) => {
                 return (
                     <>
-                        <div>{record.email}</div>
+                        <div style={{ maxWidth: 135 }}>{record.email}</div>
                     </>
                 )
             },
@@ -57,7 +57,6 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            // sorter: (a, b) => a.email > b.email,
             width: '40%',
         },
         {

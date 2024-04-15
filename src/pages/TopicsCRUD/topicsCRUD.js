@@ -26,6 +26,13 @@ const TopicsCRUD = () => {
             title: 'Topic',
             dataIndex: 'name',
             width: '70%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <div style={{ maxWidth: 135 }}>{record.name}</div>
+                    </>
+                )
+            },
         },
         {
             title: '',
