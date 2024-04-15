@@ -47,9 +47,11 @@ const Profile = () => {
     const onFinish = async (e) => {
         setIsLoading(true)
         const res = await updateUser(idUser, e)
-        await setTimeout(() => {
-            alert("Update info successfully!")
-        }, 1000)
+        if (res) {
+            await setTimeout(() => {
+                alert("Update successfully!")
+            }, 1000)
+        }
         await setIsLoading(false)
     }
     useEffect(() => {

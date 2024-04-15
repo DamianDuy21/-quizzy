@@ -9,6 +9,10 @@ import Quiz from "../pages/Quiz/quiz";
 import History from "../pages/History/history";
 import Profile from "../pages/Profile/profile";
 import ProtectedTesterPage from "../components/ProtectedTesterPage/protectedTesterPage";
+import ProtectedAdminPage from "../components/ProtectedAdminPage/protectedAdminPage";
+import TopicsCRUD from "../pages/TopicsCRUD/topicsCRUD";
+import UsersCRUD from "../pages/UsersCRUD/usersCRUD";
+import { Navigate } from "react-router-dom";
 
 const Routes = [
     {
@@ -31,6 +35,10 @@ const Routes = [
                 path: "/",
                 element: <ProtectedPage />,
                 children: [
+                    {
+                        path: "*",
+                        element: <Navigate to={'/topics'} />
+                    },
                     {
                         path: "topics",
                         element: <Topics />
@@ -55,6 +63,21 @@ const Routes = [
                                 path: "profile",
                                 element: <Profile />
                             },
+                            {
+                                path: "/",
+                                element: <ProtectedAdminPage />,
+                                children: [
+                                    {
+                                        path: "topicscrud",
+                                        element: <TopicsCRUD />
+                                    },
+                                    {
+                                        path: "userscrud",
+                                        element: <UsersCRUD />
+                                    },
+                                ]
+                            },
+
                         ]
                     },
 

@@ -32,6 +32,7 @@ const Registered = () => {
             if (res2 && res2.length > 0) {
                 setIsLoading(false)
                 alert("Sign-up successfully!")
+                setCookie("email", res2[0].email, 1)
                 setCookie("fullName", res2[0].fullName, 1)
                 setCookie("userName", res2[0].email, 1)
                 setCookie("password", res2[0].password, 1)

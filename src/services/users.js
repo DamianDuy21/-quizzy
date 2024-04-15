@@ -1,8 +1,16 @@
-import { collection, getDocs, limit, orderBy, query, where, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import db from "../firebase";
 import { v4 as uuidv4 } from 'uuid';
 const colRef = collection(db, "users")
 
+export const getUsers = async () => {
+    const res = await getDocs(colRef)
+    let items = []
+    res.forEach(item => {
+        items.push(item.data())
+    })
+    return items
+}
 export const getUserLogin = async (email, password) => {
     const q = await query(colRef, where("email", "==", email), where("password", "==", password))
     const res = await getDocs(q)
@@ -13,7 +21,7 @@ export const getUserLogin = async (email, password) => {
     return items
 }
 export const getTester = async () => {
-    const q = await query(colRef, where("email", "==", "tester@gmail.com"), where("password", "==", "123456"))
+    const q = await query(colRef, where("email", "==", "tester"))
     const res = await getDocs(q)
     let items = []
     res.forEach(item => {
@@ -41,7 +49,7 @@ export const checkUserSignUp = async (email) => {
 }
 export const addUser = async (obj) => {
     try {
-        const res = await doc(colRef, uuidv4())
+        const res = await doc(colRef, obj.id)
         const ress = await setDoc(res, obj)
         if (ress) {
             console.log(ress)
@@ -60,6 +68,17 @@ export const updateUser = async (id, obj) => {
         }
     }
     catch (err) {
+        alert(err)
+    }
+}
+export const deleteUser = async (id) => {
+    try {
+        const docRef = doc(db, "users", id);
+        const res = await deleteDoc(docRef);
+        if (res) {
+            return res
+        }
+    } catch (err) {
         alert(err)
     }
 }

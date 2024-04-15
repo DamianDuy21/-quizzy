@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-
 import "./styles.css"
 import { Button, Dropdown, Layout, Menu, Popconfirm, Space } from "antd"
 import { useEffect, useState } from "react";
-import { FileTextOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UnorderedListOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { FileTextOutlined, HomeOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, UnorderedListOutlined, UploadOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import LayoutBeforeLayout from "../LayoutBeforeLogin/layoutBeforeLogin";
 import { useSelector } from "react-redux";
 import { deleteAllCookies, getCookie } from "../../helper/cookies";
@@ -67,6 +67,52 @@ const LayoutAfterLogin = () => {
             label: <Link to={"/topics"}>Topics</Link>,
         },
     ]
+    const items3 = [
+        {
+            // key: '/',
+            icon: <HomeOutlined />,
+            label: <Link>General</Link>,
+            children: [
+                {
+                    key: '/topics',
+                    icon: <UnorderedListOutlined />,
+                    label: <Link to={"/topics"}>Topics</Link>,
+
+                },
+                {
+                    key: '/profile',
+                    icon: <FileTextOutlined />,
+                    label: <Link to={"/profile"}>Profile</Link>,
+
+                },
+                {
+                    key: '/history',
+                    icon: <VideoCameraOutlined />,
+                    label: <Link to={"/history"}>History</Link>,
+                }
+            ]
+
+        },
+        {
+            // key: '/',
+            icon: <ProductOutlined />,
+            label: <Link>Manage</Link>,
+            children: [
+                {
+                    key: '/topicscrud',
+                    icon: <UnorderedListOutlined />,
+                    label: <Link to={"topicscrud"}>Topics</Link>,
+                },
+                {
+                    key: '/userscrud',
+                    icon: <UserSwitchOutlined />,
+                    label: <Link to={"userscrud"}>Users</Link>,
+                },
+            ]
+
+        },
+
+    ]
 
     return (<>
         <Layout>
@@ -112,7 +158,7 @@ const LayoutAfterLogin = () => {
                         theme="light"
                         mode="inline"
                         defaultSelectedKeys={param.pathname}
-                        items={role == "TESTER" ? (items2) : (items1)}
+                        items={role == "TESTER" ? (items2) : (role == "ADMIN" ? (items3) : (items1))}
                     />
                 </Sider>
                 <main>

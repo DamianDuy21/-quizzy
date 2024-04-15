@@ -1,15 +1,11 @@
-import { Button, Table } from "antd";
-import { useEffect, useState } from "react";
-import { getResultsByUserEmail } from "../../services/result";
-import { getCookie } from "../../helper/cookies";
-import { Link, useNavigate } from "react-router-dom";
-import ViewDetailResultButton from "../../components/ViewDetailResultButton/viewDetailResultButton";
-import moment from "moment";
+import { Table } from "antd"
+import { useEffect, useState } from "react"
+import { getUsers } from "../../services/users"
+import UsersCRUDButtons from "../../components/UsersCRUDButtons/usersCRUDButtons"
 
-const History = () => {
-    const role = getCookie("role")
+const UsersCRUD = () => {
+    const [data, setData] = useState([])
     const [tableCollapse, setTableCollapse] = useState(false)
-    const [data, setData] = useState();
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState({
         pagination: {
@@ -28,34 +24,21 @@ const History = () => {
     })
     const columnsMini = [
         {
-            title: 'Topic',
-            dataIndex: 'topicName',
-            sorter: (a, b) => a.topicName > b.topicName,
-            width: '40%',
-        },
-        {
-            title: 'Created at',
-            dataIndex: 'createdAt',
-            sorter: (a, b) => (moment(a.createdAt) > moment(b.createdAt)),
-            width: '40%',
-            render: (text, record, index) => {
-                return (
-                    <>
-                        {moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}
-                    </>
-                )
-            }
+            title: 'E-mail',
+            dataIndex: 'email',
+            // sorter: (a, b) => a.email > b.email,
+            width: '70%',
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <ViewDetailResultButton id={record.id} />
+                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
                     </>
                 )
             },
-            width: '20%',
+            width: '30%',
 
         },
     ]
@@ -66,34 +49,21 @@ const History = () => {
             width: '40%',
         },
         {
-            title: 'Topic',
-            dataIndex: 'topicName',
-            sorter: (a, b) => a.topicName > b.topicName,
-            width: '20%',
-        },
-        {
-            title: 'Created at',
-            dataIndex: 'createdAt',
-            sorter: (a, b) => (moment(a.createdAt) > moment(b.createdAt)),
-            width: '30%',
-            render: (text, record, index) => {
-                return (
-                    <>
-                        {moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}
-                    </>
-                )
-            }
+            title: 'E-mail',
+            dataIndex: 'email',
+            // sorter: (a, b) => a.email > b.email,
+            width: '40%',
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <ViewDetailResultButton id={record.id} />
+                        <UsersCRUDButtons data={data} setData={setData} id={record.id} />
                     </>
                 )
             },
-            width: '10%',
+            width: '20%',
 
         },
     ];
@@ -112,24 +82,21 @@ const History = () => {
     };
     const fetchResults = async () => {
         setLoading(true)
-        const userEmail = getCookie("email")
-        const res = await getResultsByUserEmail(userEmail)
+        const res = await getUsers()
         setData(res)
         setLoading(false)
     }
-
     useEffect(() => {
         let initWidth = window.innerWidth
         if (initWidth <= 767.98) {
             setTableCollapse(true)
         }
         fetchResults()
+
     }, [])
     return (
         <>
-            {role == "TESTER" ? (<>
-
-            </>) : (<>
+            {data ? (<>
                 <Table
                     columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}
@@ -137,9 +104,10 @@ const History = () => {
                     loading={loading}
                     onChange={handleTableChange}
                 />
-            </>)}
+            </>)
 
+                : (<></>)}
         </>
     )
 }
-export default History
+export default UsersCRUD
