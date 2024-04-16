@@ -36,19 +36,36 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.email > b.email,
+            // defaultSortOrder: 'ascend',
+            // sorter: (a, b) => a.email > b.email,
             width: "70%",
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 128 }}>
+                        <div style={{ maxWidth: 64 }}>
                             {record.email}
                         </div>
 
                     </>
                 )
             },
+        },
+        {
+            title: 'Latest access',
+            dataIndex: 'latestAccess',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => (moment(a.latestAccess) > moment(b.latestAccess)),
+            width: '30%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <div style={{ maxWidth: 60 }}>
+                            {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
+                        </div>
+
+                    </>
+                )
+            }
         },
         {
             title: '',

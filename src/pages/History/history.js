@@ -37,7 +37,7 @@ const History = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 46 }}>
+                        <div style={{ maxWidth: 42 }}>
                             {record.topicName}
                         </div>
 
@@ -49,11 +49,11 @@ const History = () => {
             title: 'Created at',
             dataIndex: 'createdAt',
             sorter: (a, b) => (moment(a.createdAt) > moment(b.createdAt)),
-            width: '40%',
+            width: '50%',
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 46 }}>
+                        <div style={{ maxWidth: 42 }}>
                             {moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}
                         </div>
 
@@ -66,14 +66,14 @@ const History = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 68 }}>
+                        <div style={{ maxWidth: 60, transform: "translateX(-4px)" }}>
                             <ViewDetailResultButton id={record.id} />
                         </div>
 
                     </>
                 )
             },
-            width: '20%',
+            width: '10%',
 
         },
     ]
