@@ -9,7 +9,7 @@ const UserItems = (props) => {
 
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{ color: "#fff", fontSize: "17px", transform: "translateY(1px)" }}>
-                    {user.fullName}
+                    {user.fullName ? (<>{user.fullName}</>) : (<>{getCookie("fullName")}</>)}
                 </div>
                 <span className="body-medium auth-btn" onClick={handleLogout}>
                     <LogoutOutlined />
