@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { getUserByEmail, getUsers } from "../../services/users"
 import UsersCRUDButtons from "../../components/UsersCRUDButtons/usersCRUDButtons"
 import { useForm } from "antd/es/form/Form"
+import moment from "moment"
 
 const UsersCRUD = () => {
     const [data, setData] = useState([])
@@ -27,6 +28,7 @@ const UsersCRUD = () => {
     const fetchUsers = async () => {
         setLoading(true)
         const res = await getUsers()
+        console.log(res)
         setData(res)
         setLoading(false)
     }
@@ -65,14 +67,29 @@ const UsersCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            width: '40%',
+            width: '25%',
         },
         {
             title: 'E-mail',
             dataIndex: 'email',
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.email > b.email,
-            width: '40%',
+            width: '30%',
+        },
+        {
+            title: 'Latest access',
+            dataIndex: 'latestAccess',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => (moment(a.latestAccess) > moment(b.latestAccess)),
+            render: (text, record, index) => {
+                return (
+                    <>
+                        {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
+
+                    </>
+                )
+            },
+            width: '25%',
         },
         {
             title: '',

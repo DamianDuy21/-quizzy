@@ -1,4 +1,4 @@
-import { getTester, getUserLogin } from "../../services/users"
+import { getTester, getUserLogin, updateUser } from "../../services/users"
 import { deleteAllCookies, getCookie, setCookie } from "../../helper/cookies";
 import "./styles.css"
 import { useNavigate } from "react-router-dom"
@@ -23,20 +23,21 @@ const Login = () => {
                 type: "authen",
                 value: true
             })
+
+            data.latestAccess = Date.now()
+            await updateUser(res[0].id, data)
             setIsLoading(false)
             nav("/topics")
             setCookie("fullName", data.fullName, 1)
+            // setCookie("password", data.password, 1)
             setCookie("email", data.email, 1)
-            setCookie("password", data.password, 1)
             setCookie("token", uuidv4(), 1)
             setCookie("id", data.id, 1)
             setCookie("role", data.role, 1)
-
         }
         else {
             setIsLoading(false)
             alert("Wrong information!")
-
         }
     }
     const handleSignWithTestAccount = async () => {
@@ -49,11 +50,12 @@ const Login = () => {
                 type: "authen",
                 value: true
             })
+            data.latestAccess = Date.now()
+            await updateUser(res[0].id, data)
             setIsLoading2(false)
             nav("/topics")
             setCookie("fullName", data.fullName, 1)
             setCookie("email", data.email, 1)
-            setCookie("password", data.password, 1)
             setCookie("token", uuidv4(), 1)
             setCookie("id", data.id, 1)
             setCookie("role", data.role, 1)

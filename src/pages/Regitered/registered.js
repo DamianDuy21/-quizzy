@@ -20,6 +20,8 @@ const Registered = () => {
             "password": password,
             "id": uuidv4(),
             "role": "USER",
+            "createdAt": Date.now(),
+            "latestAccess": Date.now(),
         }
         const res = await checkUserSignUp(email)
         if (res && res.length > 0) {
@@ -33,9 +35,8 @@ const Registered = () => {
                 setIsLoading(false)
                 alert("Sign-up successfully!")
                 setCookie("email", res2[0].email, 1)
+                // setCookie("password", res2[0].password, 1)
                 setCookie("fullName", res2[0].fullName, 1)
-                setCookie("userName", res2[0].email, 1)
-                setCookie("password", res2[0].password, 1)
                 setCookie("token", res2[0].token, 1)
                 setCookie("id", res2[0].id, 1)
                 setCookie("role", res2[0].role, 1)

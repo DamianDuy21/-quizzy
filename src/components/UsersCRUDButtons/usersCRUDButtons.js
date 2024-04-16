@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
-import { Button, Divider, Form, Input, Modal, Popconfirm, Row } from "antd"
+import { Button, Col, Divider, Form, Input, Modal, Popconfirm, Row } from "antd"
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
+import moment from "moment";
 
 const UsersCRUDButtons = (props) => {
     const { fetchUsers, id } = props
@@ -18,6 +19,8 @@ const UsersCRUDButtons = (props) => {
             email: res[0].email,
             fullName: res[0].fullName,
             password: res[0].password,
+            createdAt: moment(res[0].createdAt).format('DD-MM-YYYY HH:mm:ss'),
+            latestAccess: moment(res[0].latestAccess).format('DD-MM-YYYY HH:mm:ss')
         });
     }
     const onFinish = async (e) => {
@@ -85,6 +88,36 @@ const UsersCRUDButtons = (props) => {
                     >
                         <Input disabled={true} />
                     </Form.Item>
+                    <Row gutter={[12, 12]}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Created at"
+                                name="createdAt"
+                                rules={[
+                                    {
+                                        required: true,
+
+                                    },
+                                ]}
+                            >
+                                <Input disabled={true} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                label="Latest access"
+                                name="latestAccess"
+                                rules={[
+                                    {
+                                        required: true,
+
+                                    },
+                                ]}
+                            >
+                                <Input disabled={true} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
 
                     <Form.Item
                         label="Full name"
