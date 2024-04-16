@@ -50,6 +50,9 @@ const Profile = () => {
         dispatch({
             type: "update",
             value: {
+                email: "",
+                id: "",
+                role: "",
                 fullName: e.fullName,
                 password: e.password,
             }
