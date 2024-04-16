@@ -25,7 +25,7 @@ export const UserReducer = (state = {}, action) => {
             if (action.value.role) {
                 init.role = action.value.role
             }
-            return state
+            return init
         case ("update"):
             if (action.value.email) {
                 init.email = action.value.email
@@ -42,7 +42,7 @@ export const UserReducer = (state = {}, action) => {
             if (action.value.role) {
                 init.role = action.value.role
             }
-            return state
+            return init
     }
-    return state
+    return init
 }

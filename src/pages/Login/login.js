@@ -34,7 +34,7 @@ const Login = () => {
                 }
             })
             data.latestAccess = Date.now()
-            await updateUser(res[0].id, data)
+            await updateUser(res[0].id, data) //update lai thoi gian truy cap
             setIsLoading(false)
             nav("/topics")
             setCookie("fullName", data.fullName, 1)
@@ -59,8 +59,18 @@ const Login = () => {
                 type: "authen",
                 value: true
             })
+            dispatch({
+                type: "login",
+                value: {
+                    email: data.email,
+                    fullName: data.fullName,
+                    id: data.id,
+                    password: data.password,
+                    role: data.role,
+                }
+            })
             data.latestAccess = Date.now()
-            await updateUser(res[0].id, data)
+            await updateUser(res[0].id, data) //update lai thoi gian truy cap
             setIsLoading2(false)
             nav("/topics")
             setCookie("fullName", data.fullName, 1)
