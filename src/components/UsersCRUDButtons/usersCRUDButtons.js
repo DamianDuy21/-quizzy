@@ -7,12 +7,9 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 
 const UsersCRUDButtons = (props) => {
-    const { fetchUsers, record } = props
+    const { tableCollapse, fetchUsers, record } = props
     const dispatch = useDispatch()
-    console.log(record)
     const [form] = useForm()
-    const [role, setRole] = useState("")
-    const [tmp, setTmp] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const onFinish = async (e) => {
@@ -50,7 +47,6 @@ const UsersCRUDButtons = (props) => {
     const handleDeleteUser = async (e) => {
         e.preventDefault()
         console.log(record.id)
-        // const res = await deleteUser(record.id)
         await setTimeout(() => {
             alert("Delete successfully!")
         }, 1000)
@@ -166,8 +162,8 @@ const UsersCRUDButtons = (props) => {
                     <div style={{ padding: "6px 0" }}></div>
                 </Form>
             </Modal>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "end", flexWrap: "wrap" }}>
 
+            <div style={{ display: "flex", gap: "12px", justifyContent: "end", flexWrap: 'wrap' }}>
                 <Button
                     onClick={handleEditUser}
                     style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><EditOutlined /></Button>

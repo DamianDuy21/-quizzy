@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, Table } from "antd"
+import { Badge, Button, Col, Form, Input, Row, Table, Tag } from "antd"
 import { useEffect, useState } from "react"
 import { getUserByEmail, getUsers } from "../../services/users"
 import UsersCRUDButtons from "../../components/UsersCRUDButtons/usersCRUDButtons"
@@ -8,7 +8,7 @@ import moment from "moment"
 const UsersCRUD = () => {
     const [data, setData] = useState([])
     const [tableCollapse, setTableCollapse] = useState(false)
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [form] = useForm()
     const [tableParams, setTableParams] = useState({
         pagination: {
@@ -26,10 +26,10 @@ const UsersCRUD = () => {
         }
     })
     const fetchUsers = async () => {
-        setLoading(true)
+        setIsLoading(true)
         const res = await getUsers()
         setData(res)
-        setLoading(false)
+        setIsLoading(false)
     }
     const columnsMini = [
         {
@@ -37,11 +37,11 @@ const UsersCRUD = () => {
             dataIndex: 'email',
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.email > b.email,
-            width: "70%",
+            width: "40%",
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 64 }}>
+                        <div style={{ maxWidth: 86 }}>
                             {record.email}
                         </div>
 
@@ -49,33 +49,55 @@ const UsersCRUD = () => {
                 )
             },
         },
+        // {
+        //     title: 'Latest access',
+        //     dataIndex: 'latestAccess',
+        //     defaultSortOrder: 'descend',
+        //     sorter: (a, b) => (moment(a.latestAccess) > moment(b.latestAccess)),
+        //     width: '30%',
+        //     render: (text, record, index) => {
+        //         return (
+        //             <>
+        //                 <div style={{ maxWidth: 56 }}>
+        //                     {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
+        //                 </div>
+
+        //             </>
+        //         )
+        //     }
+        // },
         {
-            title: 'Latest access',
-            dataIndex: 'latestAccess',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => (moment(a.latestAccess) > moment(b.latestAccess)),
-            width: '30%',
+            title: 'Status',
+            dataIndex: 'status',
+            width: '40%',
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 60 }}>
-                            {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
-                        </div>
+                        {(record.status == "online") ? (<>
+                            <div style={{ maxWidth: 24 }}>
+                                <Badge color={'green'} />
+                            </div>
 
+                        </>)
+                            : (<>
+                                <div style={{ maxWidth: 24 }}>
+                                    <Badge color={'red'} />
+                                </div>
+                            </>)}
                     </>
                 )
-            }
+            },
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons fetchUsers={fetchUsers} record={record} />
+                        <UsersCRUDButtons tableCollapse={tableCollapse} fetchUsers={fetchUsers} record={record} />
                     </>
                 )
             },
-            width: '30%',
+            width: '20%',
 
         },
     ]
@@ -83,14 +105,34 @@ const UsersCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            width: '25%',
+            width: '20%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <div style={{ maxWidth: 100 }}>
+                            {record.id}
+                        </div>
+
+                    </>
+                )
+            },
         },
         {
             title: 'E-mail',
             dataIndex: 'email',
             defaultSortOrder: 'ascend',
             sorter: (a, b) => a.email > b.email,
-            width: '30%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        <div style={{ maxWidth: 140 }}>
+                            {record.email}
+                        </div>
+
+                    </>
+                )
+            },
+            width: '25%',
         },
         {
             title: 'Latest access',
@@ -100,23 +142,43 @@ const UsersCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
+                        <div style={{ maxWidth: 56 }}>
+                            {moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss')}
+
+                        </div>
 
                     </>
                 )
             },
-            width: '25%',
+            width: '20%',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            width: '30%',
+            render: (text, record, index) => {
+                return (
+                    <>
+                        {(record.status == "online") ? (<>
+                            <Tag color="success">online</Tag>
+                        </>)
+                            : (<>
+                                <Tag color="error">offline</Tag>
+                            </>)}
+                    </>
+                )
+            },
         },
         {
             title: '',
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons fetchUsers={fetchUsers} record={record} />
+                        <UsersCRUDButtons tableCollapse={tableCollapse} fetchUsers={fetchUsers} record={record} />
                     </>
                 )
             },
-            width: '20%',
+            width: '25%',
 
         },
     ];
@@ -139,12 +201,13 @@ const UsersCRUD = () => {
             email: ""
         })
         if (e.email) {
+            setIsLoading(true)
             const res = await getUserByEmail(e.email)
             await setData(res)
+            setIsLoading(false)
         }
         else {
-            const res = await getUsers()
-            setData(res)
+            await fetchUsers()
         }
     }
 
@@ -227,7 +290,7 @@ const UsersCRUD = () => {
                     columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}
                     pagination={tableParams.pagination}
-                    loading={loading}
+                    loading={isLoading}
                     onChange={handleTableChange}
                 />
             </>)

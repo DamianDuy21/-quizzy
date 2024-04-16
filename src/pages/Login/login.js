@@ -34,6 +34,7 @@ const Login = () => {
                 }
             })
             data.latestAccess = Date.now()
+            data.status = "online"
             await updateUser(res[0].id, data) //update lai thoi gian truy cap
             setIsLoading(false)
             nav("/topics")

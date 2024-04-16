@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getResultById } from "../../services/result";
 import { Button, Divider, Form, Radio, Space } from "antd";
-import { getQuestionsByTopicId } from "../../services/questions";
+import { getQuestionsById, getQuestionsByTopicId } from "../../services/questions";
 import { getTopicIdByTopicId } from "../../services/topics";
 
 const Result = () => {
@@ -20,59 +20,27 @@ const Result = () => {
     var point = 0;
     var total = 0;
 
-    //     const res = await getResultById(resultId.resultId);
-    //     const ress = await getQuestionsByTopicId(parseInt(res[0].topicId));
-    //     await setUserAnswers(res[0].userAnswers);
-    //     await setSystemAnswer(ress);
-    //     console.log(res)
-    //     console.log(ress)
-    //     console.log("userAnswers:", userAnswers)
-    //     console.log("systemAnswer:", systemAnswer);
-    //     let res2 = [];
-    //     for (let i = 0; i < systemAnswer.length; i++) {
-    //         total += 1;
-    //         if (userAnswers[i]) {
-    //             if (userAnswers[i] && systemAnswer[i].correctAnswer == userAnswers[i].answer) {
-    //                 point += 1;
-    //             }
-    //             const obj = {
-    //                 id: systemAnswer[i].id,
-    //                 topicId: systemAnswer[i].topicId,
-    //                 question: systemAnswer[i].question,
-    //                 answers: systemAnswer[i].answers,
-    //                 correctAnswer: systemAnswer[i].correctAnswer,
-    //                 userAnswer: userAnswers[i].answer,
-    //             };
-    //             res2.push(obj);
-    //         }
-    //     }
-
-    //     setMark(Math.round((point / total) * 100 / 10));
-    //     setResult(res2);
-    //     console.log("Result:", res2);
-    // };
     const fetchData = async () => {
         try {
+            setIsLoading(true)
             const res = await getResultById(resultId.resultId);
-            const ress = await getQuestionsByTopicId(parseInt(res[0].topicId));
             const ress2 = await getTopicIdByTopicId(res[0].topicId)
             setTopicName(ress2[0].name)
-            ress.sort((a, b) => (parseInt(a.id) > parseInt(b.id)) ? 1 : ((parseInt(b.id) > parseInt(a.id)) ? -1 : 0));
-            // console.log(res)
             let res2 = [];
             const tmp = res[0].userAnswers;
-            for (let i = 0; i < ress.length; i++) {
+            for (let i = 0; i < tmp.length; i++) {
                 total += 1;
                 {
-                    if (tmp[i] && ress[i].correctAnswer == tmp[i].userAnswer) {
+                    const q = await getQuestionsById(tmp[i].id)
+                    if (tmp[i] && q[0].correctAnswer == tmp[i].userAnswer) {
                         point += 1;
                     }
                     const obj = {
-                        id: ress[i].id,
-                        topicId: ress[i].topicId,
-                        question: ress[i].question,
-                        answers: ress[i].answers,
-                        correctAnswer: ress[i].correctAnswer,
+                        id: q[0].id,
+                        topicId: q[0].topicId,
+                        question: q[0].question,
+                        answers: q[0].answers,
+                        correctAnswer: q[0].correctAnswer,
                         userAnswer: tmp[i].userAnswer,
                     };
                     res2.push(obj);
@@ -81,8 +49,8 @@ const Result = () => {
 
             res2.sort((a, b) => (parseInt(a.id) > parseInt(b.id)) ? 1 : ((parseInt(b.id) > parseInt(a.id)) ? -1 : 0));
             setResult(res2);
-            // console.log(res2)
             setMark(parseFloat((point / total) * 10).toFixed(1));
+            setIsLoading(false)
         } catch (error) {
             console.error("Error fetching data:", error);
         }

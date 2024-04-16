@@ -1,6 +1,6 @@
 import "./styles.css"
 import { v4 as uuidv4 } from 'uuid';
-import { addUser, checkUserSignUp, getUserById } from '../../services/users';
+import { addUser, checkUserSignUp, getUserById, updateUser } from '../../services/users';
 import { useNavigate } from 'react-router-dom';
 import { deleteAllCookies, getCookie, setCookie } from "../../helper/cookies";
 import { Button, Checkbox, Divider, Form, Input } from 'antd';
@@ -54,7 +54,9 @@ const Registered = () => {
                 setTimeout(() => {
                     nav("/topics")
                 }, 1000)
-
+                let obj = res2[0]
+                obj.status = "online"
+                await updateUser(res2[0].id, obj)
             }
         }
     }

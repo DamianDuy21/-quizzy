@@ -6,7 +6,7 @@ import { useForm } from "antd/es/form/Form"
 const TopicsCRUD = () => {
     const [data, setData] = useState([])
     const [tableCollapse, setTableCollapse] = useState(false)
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [form] = useForm()
     const [tableParams, setTableParams] = useState({
         pagination: {
@@ -24,10 +24,10 @@ const TopicsCRUD = () => {
         }
     })
     const fetchTopics = async () => {
-        setLoading(true)
+        setIsLoading(true)
         const res = await getTopics()
         setData(res)
-        setLoading(false)
+        setIsLoading(false)
     }
     const columnsMini = [
         {
@@ -35,7 +35,7 @@ const TopicsCRUD = () => {
             dataIndex: 'name',
             width: '40%',
             defaultSortOrder: 'descend',
-            sorter: (a, b) => a.name > b.name,
+            sorter: (a, b) => a.name < b.name,
             render: (text, record, index) => {
                 return (
                     <>
@@ -92,7 +92,7 @@ const TopicsCRUD = () => {
             title: 'Topic',
             dataIndex: 'name',
             defaultSortOrder: 'descend',
-            sorter: (a, b) => a.name > b.name,
+            sorter: (a, b) => a.name < b.name,
             width: '30%',
         },
         {
@@ -139,22 +139,19 @@ const TopicsCRUD = () => {
         }
     };
     const onFinish = async (e) => {
-        console.log(e)
         form.resetFields()
         form.setFieldValue({
             name: ""
         })
         if (e.name) {
+            setIsLoading(true)
             const res = await getTopicIdByTopicName(e.name)
             await setData(res)
+            setIsLoading(false)
         }
         else {
-            const res = await getTopics()
-            setData(res)
-
+            await fetchTopics()
         }
-
-
     }
 
     useEffect(() => {
@@ -237,7 +234,7 @@ const TopicsCRUD = () => {
                     columns={tableCollapse ? (columnsMini) : (columns)}
                     dataSource={data}
                     pagination={tableParams.pagination}
-                    loading={loading}
+                    loading={isLoading}
                     onChange={handleTableChange}
                 />
             </>)

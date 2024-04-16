@@ -1,30 +1,34 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons"
 import { Button, Col, Divider, Form, Input, Modal, Popconfirm, Row } from "antd"
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
-import { getQuestionsById } from "../../services/questions";
+import { getQuestionsById, updateQuestion } from "../../services/questions";
 
 const TopicDetailCRUDButtons = (props) => {
-    const { data, setData, id } = props
+    const { fetchQuestions, record } = props
     const [form] = useForm()
-    const [q, setQ] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
     const layout = {
         labelCol: { span: 4 },
         wrapperCol: { span: 40 },
     };
-    const fetchQuestionById = async () => {
-        const res = await getQuestionsById(id)
-        setQ(res[0])
-        form.setFieldsValue({
-            id: res[0].id,
-            question: res[0].question,
-            answers: res[0].answers,
-            correctAnswer: res[0].correctAnswer,
-            topicId: res[0].topicId
-        });
+    const handleDisplayQuestion = async (e) => {
+        e.preventDefault()
+        let obj = record
+        if (obj.status == "displayed") {
+            obj.status = "hidden"
+        }
+        else if (obj.status == "hidden") {
+            obj.status = "displayed"
+        }
+        await updateQuestion(record.id, obj)
+        await fetchQuestions()
+        await setTimeout(() => {
+            alert("Update successfully!")
+        }, 500)
+
     }
     const onFinish = async (e) => {
         setIsLoading(true)
@@ -47,7 +51,6 @@ const TopicDetailCRUDButtons = (props) => {
     }
     const handleDeleteQuestion = async (e) => {
         e.preventDefault()
-        console.log(id)
         // const res = await deleteUser(id)
         await setTimeout(() => {
             alert("This feature is not available!")
@@ -58,9 +61,14 @@ const TopicDetailCRUDButtons = (props) => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    useEffect(() => {
-        fetchQuestionById()
-    }, [])
+    form.setFieldsValue({
+        id: record.id,
+        question: record.question,
+        answers: record.answers,
+        correctAnswer: record.correctAnswer,
+        topicId: record.topicId
+    });
+
     return (
         <>
             <Modal
@@ -155,7 +163,7 @@ const TopicDetailCRUDButtons = (props) => {
                             },
                         ]}
                     >
-                        {q?.answers?.map((item, index) => (
+                        {record?.answers?.map((item, index) => (
                             <Form.Item label={index + 1}
                                 name={`ans-${index}`}
                                 initialValue={item}
@@ -182,6 +190,13 @@ const TopicDetailCRUDButtons = (props) => {
                 <Button
                     onClick={handleEditQuestion}
                     style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><EditOutlined /></Button>
+                <Button
+                    onClick={handleDisplayQuestion}
+                    style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {record.status == "displayed"
+                        ? (<><EyeInvisibleOutlined /></>)
+                        : (<><EyeOutlined /></>)}
+                </Button>
                 <Popconfirm
                     placement="bottomRight"
                     title={"Are you sure delete this user?"}

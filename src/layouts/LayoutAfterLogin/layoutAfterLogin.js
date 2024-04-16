@@ -7,14 +7,15 @@ import LayoutBeforeLayout from "../LayoutBeforeLogin/layoutBeforeLogin";
 import { useSelector } from "react-redux";
 import { deleteAllCookies, getCookie } from "../../helper/cookies";
 import UserItems from "../../components/UserItems/userItems";
+import { getUserById, updateUser } from "../../services/users";
 const { Header, Footer, Sider, Content } = Layout;
 
 const LayoutAfterLogin = () => {
     const [collapsed, setCollapsed] = useState(false)
     const [logoCollapse, setLogoCollapse] = useState(false)
-    const [status, setStatus] = useState(false)
     const param = useLocation()
     const role = getCookie("role")
+    const id = getCookie("id")
     const nav = useNavigate()
     const user = useSelector(state => state.UserReducer)
     window.addEventListener("resize", (e) => {
@@ -37,9 +38,14 @@ const LayoutAfterLogin = () => {
         setCollapsed(e)
         setLogoCollapse(e)
     }
-    const handleLogout = () => {
-        deleteAllCookies();
-        nav("/")
+    const handleLogout = async () => {
+
+        const res = await getUserById(id)
+        let obj = res[0]
+        obj.status = "offline"
+        await updateUser(res[0].id, obj)
+        await deleteAllCookies();
+        await nav("/")
     }
     const items1 = [
         {

@@ -8,17 +8,24 @@ import { addResult } from "../../services/result"
 import { v4 as uuidv4 } from 'uuid';
 import { getCookie } from "../../helper/cookies"
 const Quiz = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    })
     const topicName = useParams()
     const [q, setQ] = useState([])
     const [topicId, setTopicId] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const nav = useNavigate()
     const fetchQuestionsByTopicId = async () => {
+        setIsLoading(true)
         const res = await getTopicIdByTopicName(topicName.topicName)
         setTopicId(res[0].id)
-        const res2 = await getQuestionsByTopicId(parseInt(res[0].id))
+        let res2 = await getQuestionsByTopicId(parseInt(res[0].id))
         res2.sort((a, b) => (parseInt(a.id) > parseInt(b.id)) ? 1 : ((parseInt(b.id) > parseInt(a.id)) ? -1 : 0));
+        res2 = res2.filter(item => item.status == "displayed")
         await setQ(res2)
+        setIsLoading(false)
     }
     const onFinish = async (e) => {
         setIsLoading(true)
@@ -32,7 +39,6 @@ const Quiz = () => {
                 ans.push({ id: item[0], userAnswer: item[1] })
             }
         })
-        // console.log(ans)
         const userEmail = getCookie("email")
         const obj = {
             id: uuidv4(),
