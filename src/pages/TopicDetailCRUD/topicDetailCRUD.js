@@ -63,8 +63,6 @@ const TopicsDetailCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => parseInt(a.id) > parseInt(b.id),
             width: '20%',
         },
         {

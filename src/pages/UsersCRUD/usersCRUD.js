@@ -28,7 +28,6 @@ const UsersCRUD = () => {
     const fetchUsers = async () => {
         setLoading(true)
         const res = await getUsers()
-        console.log(res)
         setData(res)
         setLoading(false)
     }
@@ -36,8 +35,8 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            // defaultSortOrder: 'ascend',
-            // sorter: (a, b) => a.email > b.email,
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.email > b.email,
             width: "70%",
             render: (text, record, index) => {
                 return (
@@ -72,7 +71,7 @@ const UsersCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons fetchUsers={fetchUsers} id={record.id} />
+                        <UsersCRUDButtons fetchUsers={fetchUsers} record={record} />
                     </>
                 )
             },
@@ -113,7 +112,7 @@ const UsersCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <UsersCRUDButtons fetchUsers={fetchUsers} id={record.id} />
+                        <UsersCRUDButtons fetchUsers={fetchUsers} record={record} />
                     </>
                 )
             },
@@ -135,7 +134,6 @@ const UsersCRUD = () => {
         }
     };
     const onFinish = async (e) => {
-        console.log(e)
         form.resetFields()
         form.setFieldValue({
             email: ""
@@ -147,10 +145,7 @@ const UsersCRUD = () => {
         else {
             const res = await getUsers()
             setData(res)
-
         }
-
-
     }
 
     useEffect(() => {
@@ -159,7 +154,6 @@ const UsersCRUD = () => {
             setTableCollapse(true)
         }
         fetchUsers()
-
     }, [])
     return (
         <>

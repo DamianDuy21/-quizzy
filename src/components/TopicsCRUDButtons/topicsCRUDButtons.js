@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined, EyeInvisibleOutlined, EyeOutlined } from 
 import { Button, Divider, Form, Input, Modal, Popconfirm } from "antd"
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
-import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
 import { getTopicIdByTopicId, updateTopic } from "../../services/topics";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from 'antd';
@@ -55,6 +54,7 @@ const TopicsCRUDButtons = (props) => {
             alert("Update successfully!")
         }, 500)
         await setIsLoading(false)
+        await setIsModalOpen(false)
     }
     const handleCancel = () => {
         setIsModalOpen(false);

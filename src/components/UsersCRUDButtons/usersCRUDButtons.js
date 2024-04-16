@@ -4,42 +4,53 @@ import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { deleteUser, getUserById, getUsers, updateUser } from "../../services/users";
 import moment from "moment";
+import { useDispatch } from "react-redux";
 
 const UsersCRUDButtons = (props) => {
-    const { fetchUsers, id } = props
+    const { fetchUsers, record } = props
+    const dispatch = useDispatch()
+    console.log(record)
     const [form] = useForm()
     const [role, setRole] = useState("")
+    const [tmp, setTmp] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
-    const fetchUserById = async () => {
-        const res = await getUserById(id)
-        console.log(res[0])
-        setRole(res[0].role)
-        form.setFieldsValue({
-            email: res[0].email,
-            fullName: res[0].fullName,
-            password: res[0].password,
-            createdAt: moment(res[0].createdAt).format('DD-MM-YYYY HH:mm:ss'),
-            latestAccess: moment(res[0].latestAccess).format('DD-MM-YYYY HH:mm:ss')
-        });
-    }
     const onFinish = async (e) => {
         setIsLoading(true)
-        await updateUser(id, e)
+        const obj = {
+            fullName: e.fullName,
+            password: e.password,
+        }
+        dispatch({
+            type: "update",
+            value: {
+                fullName: e.fullName,
+                password: e.password,
+            }
+        })
+        await updateUser(record.id, obj)
         await fetchUsers()
         await setTimeout(() => {
             alert("Update successfully!")
         }, 500)
         await setIsLoading(false)
+        await setIsModalOpen(false)
     }
-    const handleEditUser = (e) => {
+    const handleEditUser = async (e) => {
         e.preventDefault()
         setIsModalOpen(true)
+        form.setFieldsValue({
+            email: record.email,
+            fullName: record.fullName,
+            password: record.password,
+            createdAt: moment(record.createdAt).format('DD-MM-YYYY HH:mm:ss'),
+            latestAccess: moment(record.latestAccess).format('DD-MM-YYYY HH:mm:ss'),
+        })
     }
     const handleDeleteUser = async (e) => {
         e.preventDefault()
-        console.log(id)
-        const res = await deleteUser(id)
+        console.log(record.id)
+        // const res = await deleteUser(record.id)
         await setTimeout(() => {
             alert("Delete successfully!")
         }, 1000)
@@ -49,9 +60,6 @@ const UsersCRUDButtons = (props) => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-    useEffect(() => {
-        fetchUserById()
-    }, [])
     return (
         <>
             <Modal
@@ -164,7 +172,7 @@ const UsersCRUDButtons = (props) => {
                     onClick={handleEditUser}
                     style={{ padding: "16px 9px", display: "flex", justifyContent: "center", alignItems: "center" }}><EditOutlined /></Button>
 
-                {((role != "ADMIN") && (role != "TESTER")) ? (
+                {((record.role != "ADMIN") && (record.role != "TESTER")) ? (
                     <Popconfirm
                         placement="bottomRight"
                         title={"Are you sure delete this user?"}

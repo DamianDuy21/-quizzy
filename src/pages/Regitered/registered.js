@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { deleteAllCookies, getCookie, setCookie } from "../../helper/cookies";
 import { Button, Checkbox, Divider, Form, Input } from 'antd';
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 const Registered = () => {
     const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch()
     const nav = useNavigate()
     const onFinish = async (e) => {
         setIsLoading(true)
@@ -34,8 +36,17 @@ const Registered = () => {
             if (res2 && res2.length > 0) {
                 setIsLoading(false)
                 alert("Sign-up successfully!")
+                dispatch({
+                    type: "login",
+                    value: {
+                        email: res2[0].email,
+                        fullName: res2[0].fullName,
+                        id: res2[0].id,
+                        password: res2[0].password,
+                        role: "USER",
+                    }
+                })
                 setCookie("email", res2[0].email, 1)
-                // setCookie("password", res2[0].password, 1)
                 setCookie("fullName", res2[0].fullName, 1)
                 setCookie("token", res2[0].token, 1)
                 setCookie("id", res2[0].id, 1)

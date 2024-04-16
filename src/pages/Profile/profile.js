@@ -2,19 +2,19 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Divider, Form, Input, Row, Statistic } from 'antd';
 import { useEffect, useState } from 'react';
 import { getResultsByUserEmail } from '../../services/result';
-import { getCookie } from "../../helper/cookies"
+import { getCookie, setCookie } from "../../helper/cookies"
 import CountUp from 'react-countup';
-import { useNavigate } from 'react-router-dom';
 import { getUserById, updateUser } from '../../services/users';
 import { useForm } from 'antd/es/form/Form';
+import { useDispatch } from 'react-redux';
 const Profile = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [results, setResults] = useState(0)
     const [topicsNumber, setTopicsNumber] = useState(0)
     const [userInfo, setUserInfo] = useState({})
     const [tmp, setTmp] = useState(1)
-    const nav = useNavigate()
     const [form] = useForm()
+    const dispatch = useDispatch()
     const emailUser = getCookie("email")
     const idUser = getCookie("id")
     const formatter = (value) => <CountUp end={value} separator="," />;
@@ -37,8 +37,6 @@ const Profile = () => {
             const res = await getUserById(getCookie("id"));
             if (res) {
                 await setUserInfo(res[0]);
-                // console.log(res[0])
-                // console.log(userInfo)
             }
         } catch (err) {
             alert(err);
@@ -47,30 +45,35 @@ const Profile = () => {
     const onFinish = async (e) => {
         setIsLoading(true)
         const res = await updateUser(idUser, e)
-        if (res) {
-            await setTimeout(() => {
-                alert("Update successfully!")
-            }, 1000)
-        }
+        setCookie("fullName", e.fullName)
+        setCookie("password", e.password)
+        dispatch({
+            type: "update",
+            value: {
+                fullName: e.fullName,
+                password: e.password,
+            }
+        })
+
+        await setTimeout(() => {
+            alert("Update successfully!")
+        }, 1000)
         await setIsLoading(false)
     }
+    const fetchData = async () => {
+        setIsLoading(true)
+        await fetchResults();
+        await fetchUser();
+        await form.setFieldsValue({
+            email: userInfo.email,
+            fullName: userInfo.fullName,
+            password: userInfo.password,
+        });
+        await setTmp(2)
+        setIsLoading(false)
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true)
-            await fetchResults();
-            await fetchUser();
-            await form.setFieldsValue({
-                email: userInfo.email,
-                fullName: userInfo.fullName,
-                password: userInfo.password,
-            });
-            await setTmp(2)
-            setIsLoading(false)
-        };
-
         fetchData();
-
-
     }, [tmp])
     return (
         <>

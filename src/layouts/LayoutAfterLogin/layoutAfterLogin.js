@@ -14,9 +14,9 @@ const LayoutAfterLogin = () => {
     const [logoCollapse, setLogoCollapse] = useState(false)
     const [status, setStatus] = useState(false)
     const param = useLocation()
-    const userName = getCookie("fullName")
     const role = getCookie("role")
     const nav = useNavigate()
+    const user = useSelector(state => state.UserReducer)
     window.addEventListener("resize", (e) => {
         let width = e.target.innerWidth;
         if (width <= 767.98) {
@@ -25,12 +25,13 @@ const LayoutAfterLogin = () => {
         else {
         }
     })
+
     useEffect(() => {
         let initWidth = window.innerWidth
         if (initWidth <= 767.98) {
             setLogoCollapse(true)
         }
-    }, [])
+    }, [user])
 
     const handleSiderBreakPoint = (e) => {
         setCollapsed(e)
@@ -141,7 +142,9 @@ const LayoutAfterLogin = () => {
 
 
                     <div className="auth">
-                        <UserItems userName={userName} handleLogout={handleLogout} />
+                        <UserItems
+                            user={user}
+                            handleLogout={handleLogout} />
                     </div>
 
                 </div>

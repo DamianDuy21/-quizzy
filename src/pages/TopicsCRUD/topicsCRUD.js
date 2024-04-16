@@ -86,13 +86,13 @@ const TopicsCRUD = () => {
         {
             title: 'id',
             dataIndex: 'id',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.id > b.id,
             width: '20%',
         },
         {
             title: 'Topic',
             dataIndex: 'name',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.name > b.name,
             width: '30%',
         },
         {

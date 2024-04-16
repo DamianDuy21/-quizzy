@@ -23,7 +23,16 @@ const Login = () => {
                 type: "authen",
                 value: true
             })
-
+            dispatch({
+                type: "login",
+                value: {
+                    email: data.email,
+                    fullName: data.fullName,
+                    id: data.id,
+                    password: data.password,
+                    role: data.role,
+                }
+            })
             data.latestAccess = Date.now()
             await updateUser(res[0].id, data)
             setIsLoading(false)
