@@ -39,7 +39,7 @@ const TopicsCRUD = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        <div style={{ maxWidth: 64 }}>
+                        <div style={{ maxWidth: 72 }}>
                             {record.name}
                         </div>
 
