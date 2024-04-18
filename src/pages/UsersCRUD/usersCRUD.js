@@ -35,8 +35,8 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.email > b.email,
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.email < b.email,
             width: "40%",
             render: (text, record, index) => {
                 return (
@@ -120,8 +120,8 @@ const UsersCRUD = () => {
         {
             title: 'E-mail',
             dataIndex: 'email',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.email > b.email,
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.email < b.email,
             render: (text, record, index) => {
                 return (
                     <>
