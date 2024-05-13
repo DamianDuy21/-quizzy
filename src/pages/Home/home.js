@@ -5,7 +5,6 @@ import { getCookie } from "../../helper/cookies"
 
 const Home = () => {
     const [topics, setTopics] = useState([])
-    const token = getCookie("token")
     const fetchTopics = async () => {
         let items = []
         const res = await getTopics()

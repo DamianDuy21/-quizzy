@@ -1,11 +1,17 @@
 import { useNavigate } from "react-router-dom"
+import { getCookie } from "../../helper/cookies"
 
 const Topic = (props) => {
     const { item } = props
     const nav = useNavigate()
     const handleQuiz = () => {
-        // console.log(item.name)
-        nav(`/quiz/${item.name}`)
+        const token = getCookie("token")
+        if (token) {
+            nav(`/quiz/${item.name}`)
+        }
+        else {
+            nav(`/login`)
+        }
     }
     return (
 
