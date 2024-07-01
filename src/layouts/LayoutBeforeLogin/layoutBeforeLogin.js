@@ -37,7 +37,7 @@ const LayoutBeforeLayout = () => {
                             </div>
                         </>) : (<>
                             <div className="logo full">
-                                <a href="/" className="headline-medium logo-text">Logo</a>
+                                <a href="/" className="headline-medium logo-text">Quizzy</a>
                             </div>
                         </>)}
 

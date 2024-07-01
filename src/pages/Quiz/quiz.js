@@ -59,7 +59,7 @@ const Quiz = () => {
     }, [])
     return (<>
         <div className="q-wrapper title-small" style={{ padding: "16px", marginBottom: "16px" }}>
-            {topicName.topicName}
+            Chủ đề: {topicName.topicName}
         </div>
         <Divider></Divider>
         <Form onFinish={onFinish}>

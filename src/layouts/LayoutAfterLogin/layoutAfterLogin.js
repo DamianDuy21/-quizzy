@@ -133,7 +133,7 @@ const LayoutAfterLogin = () => {
                             </div>
                         </>) : (<>
                             <div className="logo full">
-                                <a href="/topics" className="headline-medium logo-text" onClick={() => { nav('/topics') }}>Logo</a>
+                                <a href="/topics" className="headline-medium logo-text" onClick={() => { nav('/topics') }}>Quizzy</a>
                             </div>
 
                         </>)}
