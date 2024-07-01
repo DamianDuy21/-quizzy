@@ -50,5 +50,6 @@
 .footer {
   text-align: center;
   padding: 16px;
-  background-color: var(--neutral-90);
+  background-color: #fff;
+  color: #1677ff;
 }/*# sourceMappingURL=styles.css.map */

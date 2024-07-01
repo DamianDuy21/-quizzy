@@ -129,6 +129,7 @@ const Registered = () => {
                                 offset: 0,
                                 span: 24,
                             }}
+                            style={{ marginBottom: "0px" }}
                         >
                             <Button type="primary" htmlType="submit"
                                 loading={isLoading}
@@ -136,7 +137,7 @@ const Registered = () => {
                                 Sign up
                             </Button>
                         </Form.Item>
-                        <Divider>or</Divider>
+                        <Divider style={{ margin: "8px 0" }}>or</Divider>
                         <Form.Item
                             wrapperCol={{
                                 offset: 0,
